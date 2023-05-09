@@ -5,7 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "响应对象")
 public class BaseResult<T> {
-    private static final int SUCCESS_CODE = 0;
+    private static final int SUCCESS_CODE = 200;
+    private static final int ERROR_CODE =  400;
     private static final String SUCCESS_MESSAGE = "成功";
     @ApiModelProperty(value = "响应码", name = "code", required = true, example = "" + SUCCESS_CODE)
     private int code;
@@ -35,6 +36,9 @@ public class BaseResult<T> {
     }
     public static <T> BaseResult<T> failWithCodeAndMsg(int code, String msg) {
         return new BaseResult<>(code, msg, null);
+    }
+    public static <T> BaseResult<T> failWithMsg(String msg) {
+        return new BaseResult<>(ERROR_CODE, msg, null);
     }
     public static <T> BaseResult<T> buildWithParam(ResponseParam param) {
         return new BaseResult<>(param.getCode(), param.getMsg(), null);
