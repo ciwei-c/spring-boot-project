@@ -24,11 +24,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("开始预处理【在业务处理器处理请求之前被调用】");
         String token = request.getHeader("Authorization");
         log.info("获取token:{}",token);
-        if(StringUtils.isBlank(token)){
-            log.error("获取token失败");
-            GraceException.display("获取token失败");
-            return false;
-        }
+//        if(StringUtils.isBlank(token)){
+//            log.error("获取token失败");
+//            GraceException.display("获取token失败");
+//            return false;
+//        }
         return true;
     }
     /**
