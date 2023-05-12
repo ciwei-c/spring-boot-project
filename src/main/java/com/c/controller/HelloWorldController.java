@@ -9,7 +9,7 @@ import java.util.HashMap;
 @RestController
 public class HelloWorldController {
     @GetMapping("/hello")
-    public BaseResult hello(){
+    public BaseResult<HashMap<String, Object>> hello(){
         HashMap<String, Object> map = new HashMap<>();
         map.put("name","helloworld");
         return BaseResult.successWithData(map);

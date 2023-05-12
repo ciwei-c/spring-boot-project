@@ -15,13 +15,13 @@ public class GraceExceptionHandler {
 
     @ExceptionHandler(FileSizeLimitExceededException.class)
     @ResponseBody
-    public BaseResult returnFileSizeLimit(FileSizeLimitExceededException e) {
+    public BaseResult<String> returnFileSizeLimit(FileSizeLimitExceededException e) {
         return BaseResult.failWithMsg("文件大小超出");
     }
 
     @ExceptionHandler(MyCustomException.class)
     @ResponseBody
-    public BaseResult returnMyCustomException(MyCustomException e) {
+    public BaseResult<String> returnMyCustomException(MyCustomException e) {
         return BaseResult.failWithMsg(e.getMessage());
     }
 

@@ -19,7 +19,7 @@ public class UserController {
 
 
     @GetMapping("/users")
-    public BaseResult getAllUser(){
+    public BaseResult<List<User>> getAllUser(){
         List<User> users = userMapper.getAll();
         return BaseResult.successWithData(users);
     }
