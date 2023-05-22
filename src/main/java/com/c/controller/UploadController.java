@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
 import com.c.config.BaseResult;
 import com.c.model.FileModel;
 import com.c.utils.TinifyUtil;
@@ -58,14 +59,17 @@ public class UploadController {
   }
 
   @PostMapping("/compress")
-  public BaseResult<String> compress(@RequestBody FileModel fileModel) {
-    // tinifyUtil.compress(this.filePath, fileName);
+  public BaseResult<String> compress(@RequestBody FileModel fileModel) throws IOException {
+    tinifyUtil.compress(fileModel.getFileName(), fileModel.getFilePath());
     return BaseResult.successWithData("https://");
   }
 
   @PostMapping("/resize")
-  public BaseResult<String> resize(@RequestBody Object params) {
-    // tinifyUtil.compress(this.filePath, fileName);
+  public BaseResult<String> resize(@RequestBody JSONObject params) throws IOException {
+    JSONObject options = params.getJSONObject("options");
+    String fileName = params.getString("fileName");
+    String filePath = params.getString("filePath");
+    tinifyUtil.resize(fileName, filePath, options);
     return BaseResult.successWithData("https://");
   }
 }

@@ -25,6 +25,9 @@
     </select>
 
     <insert id="insert" parameterType="com.c.model.User" >
+        <selectKey keyProperty="userId" resultType="String" order="BEFORE">
+            select replace(uuid(), '-', '') as userId from dual
+        </selectKey>
         INSERT INTO
         user
         (userName,password)
@@ -38,7 +41,6 @@
         SET
         <if test="userName != null">userName = #{userName},</if>
         <if test="password != null">password = #{password},</if>
-        nick_name = #{nickName}
         WHERE
         userId = #{userId}
     </update>
