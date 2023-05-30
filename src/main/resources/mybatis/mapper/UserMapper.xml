@@ -24,23 +24,21 @@
         WHERE userId = #{userId}
     </select>
 
-    <insert id="insert" parameterType="com.c.model.User" >
-        <selectKey keyProperty="userId" resultType="String" order="BEFORE">
-            select replace(uuid(), '-', '') as userId from dual
-        </selectKey>
+    <insert id="insert" parameterType="com.c.model.User">
         INSERT INTO
         user
-        (userName,password)
+        (userName,password,userId)
         VALUES
-        (#{userName}, #{password})
+        (#{userName}, #{password}, #{userId})
     </insert>
 
     <update id="update" parameterType="com.c.model.User" >
         UPDATE
         user
         SET
-        <if test="userName != null">userName = #{userName},</if>
-        <if test="password != null">password = #{password},</if>
+        <if test="userName != null and password == null">userName = #{userName}</if>
+        <if test="userName == null and password != null">password = #{password}</if>
+        <if test="userName != null and password != null">userName = #{userName}, password = #{password}</if>
         WHERE
         userId = #{userId}
     </update>
@@ -49,7 +47,7 @@
         DELETE FROM
         user
         WHERE
-        userId =#{userId}
+        userId = #{userId}
     </delete>
 
 </mapper>
