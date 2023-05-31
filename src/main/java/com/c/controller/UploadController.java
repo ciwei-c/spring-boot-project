@@ -17,9 +17,12 @@ import com.c.config.BaseResult;
 import com.c.model.FileModel;
 import com.c.utils.TinifyUtil;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Api(tags = "文件处理")
 @RequestMapping("/file")
 @RestController
 public class UploadController {
@@ -48,6 +51,7 @@ public class UploadController {
   }
 
   @PostMapping("/upload")
+  @ApiOperation(value = "文件上传")
   public BaseResult<Object> upload(@RequestParam("file") MultipartFile file) throws IOException {
     if (file.isEmpty()) {
       return BaseResult.failWithMsg("上传失败");
@@ -59,12 +63,14 @@ public class UploadController {
   }
 
   @PostMapping("/compress")
+  @ApiOperation(value = "图片压缩")
   public BaseResult<String> compress(@RequestBody FileModel fileModel) throws IOException {
     tinifyUtil.compress(fileModel.getFileName(), fileModel.getFilePath());
     return BaseResult.successWithData("https://");
   }
 
   @PostMapping("/resize")
+  @ApiOperation(value = "图片裁剪")
   public BaseResult<String> resize(@RequestBody JSONObject params) throws IOException {
     JSONObject options = params.getJSONObject("options");
     String fileName = params.getString("fileName");

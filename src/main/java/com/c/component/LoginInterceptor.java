@@ -1,6 +1,8 @@
 package com.c.component;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +20,15 @@ public class LoginInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
         log.info("开始预处理【在业务处理器处理请求之前被调用】");
         String token = request.getHeader("Authorization");
         log.info("获取token:{}", token);
         log.info("请求路径:{}", request.getRequestURL());
         return true;
     }
+
     /**
      * 目标方法执行后
      *
@@ -35,9 +39,11 @@ public class LoginInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            @Nullable ModelAndView modelAndView) throws Exception {
         log.info("postHandle执行{}", modelAndView);
     }
+
     /**
      * 页面渲染后
      *
@@ -48,7 +54,8 @@ public class LoginInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+            @Nullable Exception ex) throws Exception {
         log.info("afterCompletion执行异常{}", ex);
     }
 }

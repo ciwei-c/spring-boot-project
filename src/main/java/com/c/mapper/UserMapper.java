@@ -8,6 +8,8 @@ public interface UserMapper {
 
     List<User> getAll();
 
+    List<User> getPageList();
+
     User getOne(String userId);
 
     void insert(User user);

@@ -1,2 +1,2 @@
-./target/*
 *.jar
+target/spring-boot-project-1.0.0-SNAPSHOT.jar.original
