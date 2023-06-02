@@ -1,6 +1,5 @@
 package com.c.controller;
 
-import com.c.config.BaseResult;
 import com.c.config.PageRequest;
 import com.c.config.PageResult;
 import com.c.model.User;
@@ -30,39 +29,37 @@ public class UserController {
 
     @GetMapping("/users")
     @ApiOperation(value = "获取所有用户列表")
-    public BaseResult<List<User>> getAllUser(){
-        return BaseResult.successWithData(userService.getAll());
+    public List<User> getAllUser(){
+        return userService.getAll();
     }
 
     @GetMapping("/user")
     @ApiOperation(value = "获取用户")
-    public BaseResult<User> getUser(@RequestParam("userId") String userId){
-        return BaseResult.successWithData(userService.getOne(userId));
+    public User getUser(@RequestParam("userId") String userId){
+        return userService.getOne(userId);
     }
 
     @PostMapping("/users/page")
     @ApiOperation(value = "分页获取用户")
-    public BaseResult<PageResult> getUserPageList(@RequestBody PageRequest pageRequest){
-        return BaseResult.successWithData(userService.getUserPageList(pageRequest));
+    public PageResult getUserPageList(@RequestBody PageRequest pageRequest){
+        return userService.getUserPageList(pageRequest);
     }
 
     @PostMapping("/user")
     @ApiOperation(value = "新增用户")
-    public BaseResult<User> addUser(@RequestBody User user){
-        return BaseResult.successWithData(userService.addUser(user));
+    public User addUser(@RequestBody User user){
+        return userService.addUser(user);
     }
 
     @DeleteMapping("/user")
     @ApiOperation(value = "删除用户")
-    public BaseResult<String> deleteUser(@RequestParam("userId") String userId){
+    public void deleteUser(@RequestParam("userId") String userId){
         userService.deleteUser(userId);
-        return BaseResult.success();
     }
 
     @PutMapping("/user")
     @ApiOperation(value = "更新用户")
-    public BaseResult<String> updateUser(@RequestBody User user){
+    public void updateUser(@RequestBody User user){
         userService.updateUser(user);
-        return BaseResult.success();
     }
 }

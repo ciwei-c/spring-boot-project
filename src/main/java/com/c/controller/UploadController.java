@@ -1,10 +1,8 @@
 package com.c.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,69 +11,36 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-import com.c.config.BaseResult;
 import com.c.model.FileModel;
-import com.c.utils.TinifyUtil;
+import com.c.service.UploadService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Api(tags = "文件处理")
 @RequestMapping("/file")
 @RestController
 public class UploadController {
-  public String filePath;
-
-  @Value("${custom.field.filePath}")
-  private void setfilePath(String filePath) {
-    this.filePath = filePath;
-  }
-
-  TinifyUtil tinifyUtil = new TinifyUtil();
-
-  private String saveFile(MultipartFile file) throws IOException {
-    File targetFile = new File(this.filePath);
-    if (!targetFile.exists()) {
-      targetFile.mkdirs();
-    }
-    String fileName = file.getOriginalFilename();
-    log.info("getOriginalFilename:{}", fileName);
-    FileOutputStream out = new FileOutputStream(this.filePath + fileName);
-    out.write(file.getBytes());
-    out.flush();
-    out.close();
-    log.info("getpath:{}", targetFile.getPath());
-    return fileName;
-  }
+  
+  @Autowired
+  private UploadService uploadService;
 
   @PostMapping("/upload")
   @ApiOperation(value = "文件上传")
-  public BaseResult<Object> upload(@RequestParam("file") MultipartFile file) throws IOException {
-    if (file.isEmpty()) {
-      return BaseResult.failWithMsg("上传失败");
-    }
-    String fileName = this.saveFile(file);
-    FileModel fileModel = new FileModel();
-    fileModel.setFileName(fileName);
-    return BaseResult.successWithData(fileModel);
+  public Object upload(@RequestParam("file") MultipartFile file) throws IOException {
+    return uploadService.upload(file);
   }
 
   @PostMapping("/compress")
   @ApiOperation(value = "图片压缩")
-  public BaseResult<String> compress(@RequestBody FileModel fileModel) throws IOException {
-    tinifyUtil.compress(fileModel.getFileName(), fileModel.getFilePath());
-    return BaseResult.successWithData("https://");
+  public String compress(@RequestBody FileModel fileModel) throws IOException {
+    return uploadService.compress(fileModel);
   }
 
   @PostMapping("/resize")
   @ApiOperation(value = "图片裁剪")
-  public BaseResult<String> resize(@RequestBody JSONObject params) throws IOException {
-    JSONObject options = params.getJSONObject("options");
-    String fileName = params.getString("fileName");
-    String filePath = params.getString("filePath");
-    tinifyUtil.resize(fileName, filePath, options);
-    return BaseResult.successWithData("https://");
+  public String resize(@RequestBody JSONObject params) throws IOException {
+    String result = uploadService.resize(params);
+    return result;
   }
 }
