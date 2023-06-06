@@ -8,7 +8,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        userId, userName, password
+        userId, userName, password, userType
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
@@ -33,9 +33,9 @@
     <insert id="insert" parameterType="com.c.model.User">
         INSERT INTO
         user
-        (userName,password,userId)
+        (userName,password,userId,userType)
         VALUES
-        (#{userName}, #{password}, #{userId})
+        (#{userName}, #{password}, #{userId}, #{userType})
     </insert>
 
     <update id="update" parameterType="com.c.model.User" >

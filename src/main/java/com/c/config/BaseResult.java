@@ -14,6 +14,8 @@ public class BaseResult<T> {
     private String msg;
     @ApiModelProperty(value = "响应数据", name = "data")
     private T data;
+    @ApiModelProperty(value = "字典翻译", name = "translate")
+    private Object translate;
     private BaseResult(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
@@ -61,7 +63,12 @@ public class BaseResult<T> {
     public void setData(T data) {
         this.data = data;
     }
-
+    public void setTranslate(Object translate){
+        this.translate = translate;
+    }
+    public Object getTranslate(){
+        return translate;
+    }
 
     public static class ResponseParam {
         private int code;

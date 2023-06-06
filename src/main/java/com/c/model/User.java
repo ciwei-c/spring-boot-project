@@ -1,5 +1,7 @@
 package com.c.model;
 
+import com.c.annotation.Translator;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,4 +17,8 @@ public class User {
     
     @ApiModelProperty("用户密码")
     private String password;
+
+    @Translator("userType")
+    @ApiModelProperty("用户类型")
+    private String userType;
 }
