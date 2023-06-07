@@ -1,5 +1,6 @@
 package com.c.exception;
 
+import com.alibaba.fastjson.JSONObject;
 import com.c.config.BaseResult;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,7 +23,10 @@ public class GraceExceptionHandler {
     @ExceptionHandler(MyCustomException.class)
     @ResponseBody
     public BaseResult<String> returnMyCustomException(MyCustomException e) {
-        return BaseResult.failWithMsg(e.getMessage());
+        JSONObject object = JSONObject.parseObject(e.getMessage());
+        int code = (int) object.get("code");
+        String message = (String) object.get("message");
+        return BaseResult.failWithCodeAndMsg(code, message);
     }
 
 }

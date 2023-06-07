@@ -1,5 +1,7 @@
 package com.c.config;
 
+import com.alibaba.fastjson.JSONObject;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,7 +17,7 @@ public class BaseResult<T> {
     @ApiModelProperty(value = "响应数据", name = "data")
     private T data;
     @ApiModelProperty(value = "字典翻译", name = "translate")
-    private Object translate;
+    private JSONObject translate = new JSONObject();
     private BaseResult(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
@@ -63,10 +65,10 @@ public class BaseResult<T> {
     public void setData(T data) {
         this.data = data;
     }
-    public void setTranslate(Object translate){
+    public void setTranslate(JSONObject translate){
         this.translate = translate;
     }
-    public Object getTranslate(){
+    public JSONObject getTranslate(){
         return translate;
     }
 

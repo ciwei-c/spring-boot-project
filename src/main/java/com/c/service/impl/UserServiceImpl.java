@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.c.config.PageRequest;
 import com.c.config.PageResult;
+import com.c.exception.GraceException;
 import com.c.mapper.UserMapper;
 import com.c.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -24,9 +25,18 @@ public class UserServiceImpl implements UserService {
     return users;
   }
 
+  public void checkUserExist(String userId) {
+    User user = userMapper.getOne(userId);
+    if (user == null) {
+      GraceException.display("未找到用户");
+    }
+  }
+
   @Override
   public User getOne(String userId) {
-    return userMapper.getOne(userId);
+    User user = userMapper.getOne(userId);
+    this.checkUserExist(userId);
+    return user;
   }
 
   @Override
@@ -39,11 +49,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteUser(String userId) {
+    this.checkUserExist(userId);
     userMapper.delete(userId);
   }
 
   @Override
   public void updateUser(User user) {
+    String userId = user.getUserId();
+    this.checkUserExist(userId);
     userMapper.update(user);
   }
 

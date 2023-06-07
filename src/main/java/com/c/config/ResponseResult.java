@@ -37,7 +37,7 @@ public class ResponseResult implements ResponseBodyAdvice<Object> {
     }
     Object data = baseResult.getData();
     JSONObject translate =  new JSONObject();
-    if(!(data instanceof String)) {
+    if(!(data instanceof String) && data != null) {
       if(data instanceof ArrayList) {
         ArrayList<?> _data = (ArrayList<?>) data;
         data = _data.get(0);
