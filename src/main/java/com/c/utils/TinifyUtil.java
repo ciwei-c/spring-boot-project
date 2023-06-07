@@ -10,14 +10,10 @@ import com.tinify.Options;
 import com.tinify.Source;
 import com.tinify.Tinify;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Component
 public class TinifyUtil {
 
   public TinifyUtil() {
-    log.info("TinifyUtil:{}", "初始化TinifyUtil");
     Tinify.setKey("Frx02VPQSHFnffN94m6hpGsm81h9rCBD");
   }
 

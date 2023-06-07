@@ -8,7 +8,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        userId, userName, password, userType
+        userId, userName, password, userType, account
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
@@ -30,12 +30,26 @@
         WHERE userId = #{userId}
     </select>
 
+    <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user
+        WHERE userName = #{userName}
+    </select>
+
+    <select id="getByAccount" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user
+        WHERE account = #{account}
+    </select>
+
     <insert id="insert" parameterType="com.c.model.User">
         INSERT INTO
         user
-        (userName,password,userId,userType)
+        (userName,password,userId,userType,account)
         VALUES
-        (#{userName}, #{password}, #{userId}, #{userType})
+        (#{userName}, #{password}, #{userId}, #{userType}, #{account})
     </insert>
 
     <update id="update" parameterType="com.c.model.User" >

@@ -5,6 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.c.exception.GraceException;
+import com.c.utils.JwtToken;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +30,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
         log.info("获取token:{}", token);
         log.info("请求路径:{}", request.getRequestURL());
+        if (token == null || !JwtToken.checkToken(token)) {
+            GraceException.display("认证失败", 401);
+        }
         return true;
     }
 

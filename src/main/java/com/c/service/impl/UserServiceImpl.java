@@ -42,6 +42,26 @@ public class UserServiceImpl implements UserService {
   @Override
   public User addUser(User user) {
     String userId = UUID.randomUUID().toString().replace("-", "");
+
+    String userName = user.getUserName();
+    String account = user.getAccount();
+    String password = user.getPassword();
+
+    if(userName == null) {
+      GraceException.display("用户名不能为空");
+    }
+    if(account == null) {
+      GraceException.display("账号不能为空");
+    }
+    if(password == null) {
+      GraceException.display("密码不能为空");
+    }
+    if(userMapper.getByUserName(userName) != null) {
+      GraceException.display("用户名已存在");
+    };
+    if(userMapper.getByAccount(account) != null) {
+      GraceException.display("账号已被注册");
+    };
     user.setUserId(userId);
     userMapper.insert(user);
     return userMapper.getOne(userId);

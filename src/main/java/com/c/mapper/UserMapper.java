@@ -12,6 +12,10 @@ public interface UserMapper {
 
     User getOne(String userId);
 
+    User getByUserName(String userName);
+
+    User getByAccount(String Account);
+
     void insert(User user);
 
     void update(User user);

@@ -18,6 +18,9 @@ public class User {
     @ApiModelProperty("用户密码")
     private String password;
 
+    @ApiModelProperty("用户账号")
+    private String account;
+
     @Translator("userType")
     @ApiModelProperty("用户类型")
     private String userType;
