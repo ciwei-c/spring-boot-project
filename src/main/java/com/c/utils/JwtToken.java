@@ -69,7 +69,7 @@ public class JwtToken {
    * 
    * @return
    */
-  public static String getMemberIdByJwtToken(String jwtToken) {
+  public static String getUserIdByJwtToken(String jwtToken) {
     jwtToken = jwtToken.replace("Bearer", "");
     if (jwtToken.isEmpty()) {
       return "";

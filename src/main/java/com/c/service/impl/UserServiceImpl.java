@@ -8,6 +8,8 @@ import com.c.config.PageResult;
 import com.c.exception.GraceException;
 import com.c.mapper.UserMapper;
 import com.c.service.UserService;
+import com.c.utils.JwtToken;
+import com.c.utils.UserRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.c.model.User;
@@ -25,10 +27,19 @@ public class UserServiceImpl implements UserService {
     return users;
   }
 
-  public void checkUserExist(String userId) {
+  public User checkUserExist(String userId) {
     User user = userMapper.getOne(userId);
     if (user == null) {
       GraceException.display("未找到用户");
+    }
+    return user;
+  }
+
+  public void checkTokenIsCurrentUser(String userId) {
+    String token = UserRequest.getToken();
+    String userIdFromToken = JwtToken.getUserIdByJwtToken(token);
+    if (!userIdFromToken.equals(userId)) {
+      GraceException.display("当前token无法操作此用户");
     }
   }
 
@@ -47,21 +58,23 @@ public class UserServiceImpl implements UserService {
     String account = user.getAccount();
     String password = user.getPassword();
 
-    if(userName == null) {
+    if (userName == null) {
       GraceException.display("用户名不能为空");
     }
-    if(account == null) {
+    if (account == null) {
       GraceException.display("账号不能为空");
     }
-    if(password == null) {
+    if (password == null) {
       GraceException.display("密码不能为空");
     }
-    if(userMapper.getByUserName(userName) != null) {
+    if (userMapper.getByUserName(userName) != null) {
       GraceException.display("用户名已存在");
-    };
-    if(userMapper.getByAccount(account) != null) {
+    }
+    ;
+    if (userMapper.getByAccount(account) != null) {
       GraceException.display("账号已被注册");
-    };
+    }
+    ;
     user.setUserId(userId);
     userMapper.insert(user);
     return userMapper.getOne(userId);
@@ -70,13 +83,22 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(String userId) {
     this.checkUserExist(userId);
+    this.checkTokenIsCurrentUser(userId);
     userMapper.delete(userId);
   }
 
   @Override
   public void updateUser(User user) {
     String userId = user.getUserId();
-    this.checkUserExist(userId);
+    User userByUserId = this.checkUserExist(userId);
+    String userName = user.getUserName();
+    if (userName != null) {
+      User userByUserName = userMapper.getByUserName(userName);
+      if (userByUserName != null && !userByUserId.getUserName().equals(userName)) {
+        GraceException.display("用户名已存在");
+      }
+    }
+    this.checkTokenIsCurrentUser(userId);
     userMapper.update(user);
   }
 

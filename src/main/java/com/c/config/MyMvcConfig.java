@@ -18,14 +18,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 public class MyMvcConfig implements WebMvcConfigurer {
 
-    @Value("${pathprefix}")
-    private String pathprefix;
+    @Value("${custom.request.prefix}")
+    private String requestPrefix;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("注册拦截器");
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns(pathprefix + "/**")
-                .excludePathPatterns(pathprefix + "/login");
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns(requestPrefix + "/**")
+                .excludePathPatterns(requestPrefix + "/login");
     }
 
     @Override
@@ -39,6 +39,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.addPathPrefix(pathprefix, c -> c.isAnnotationPresent(RestController.class));
+        configurer.addPathPrefix(requestPrefix, c -> c.isAnnotationPresent(RestController.class));
     }
 }

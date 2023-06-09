@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.c.exception.GraceException;
 import com.c.utils.JwtToken;
+import com.c.utils.UserRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         log.info("开始预处理【在业务处理器处理请求之前被调用】");
-        String token = request.getHeader("Authorization");
+        String token = UserRequest.getToken();
         log.info("获取token:{}", token);
         log.info("请求路径:{}", request.getRequestURL());
         if (token == null || !JwtToken.checkToken(token)) {
